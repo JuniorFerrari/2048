@@ -12,6 +12,16 @@ setupInputOnce();
 function setupInputOnce() {
     window.addEventListener("keydown", handleInput, {once: true});
 }
+let scoreElements = document.querySelectorAll('.tile')
+let sum = 0
+for (let i = 0; i < scoreElements.length; i++) {
+    let score = parseInt(scoreElements[i].textContent);
+    sum += score
+}
+let userHighScore = Cookies.get("userHighScore")
+let winElement = document.getElementById('back')
+let div = document.getElementById('score-tab');
+div.innerHTML = `Your Score = ${sum}, Your high score = ${userHighScore} `;
 
 async function handleInput(event) {
     switch (event.key) {
@@ -51,15 +61,15 @@ async function handleInput(event) {
     const newTile = new Tile(gameBoard);
     grid.getRandomEmptyCell().linkTile(newTile);
 
-    let scoreElements = document.querySelectorAll('.tile')
-    let sum = 0
+    scoreElements = document.querySelectorAll('.tile')
+    sum = 0
     for (let i = 0; i < scoreElements.length; i++) {
         let score = parseInt(scoreElements[i].textContent);
         sum += score
     }
-    let userHighScore = Cookies.get("userHighScore")
-    let winElement = document.getElementById('back')
-    let div = document.getElementById('score-tab');
+    userHighScore = Cookies.get("userHighScore")
+    winElement = document.getElementById('back')
+    div = document.getElementById('score-tab');
     div.innerHTML = `Your Score = ${sum}, Your high score = ${userHighScore} `;
     if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
         await newTile.waitForAnimationEnd()
